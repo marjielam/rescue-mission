@@ -1,0 +1,6 @@
+<% if flash[:notice] %>
+  <p><%= flash[:notice] %></p>
+<% end %>
+
+<h1><%= @question.title %></h1>
+<p><%= @question.description %></p>
