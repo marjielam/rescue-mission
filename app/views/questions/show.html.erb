@@ -1,6 +1,27 @@
 <% if flash[:notice] %>
-  <p><%= flash[:notice] %></p>
+  <% flash[:notice].each do |error| %>
+    <p><%= error %></p>
+  <% end %>
 <% end %>
 
 <h1><%= @question.title %></h1>
 <p><%= @question.description %></p>
+
+<%= link_to "Edit question", edit_question_path(@question) %>
+<%= link_to "Delete question", @question, method: :delete, data: { confirm: 'Are you sure?' } %>
+
+<h1>Answer this question:</h1>
+
+<%= form_for [@question, @answer] do |f| %>
+  <%= f.label :description, "Answer" %>
+  <%= f.text_field :description %>
+
+  <%= f.submit %>
+<% end %>
+
+<h2>Previous Answers</h2>
+<ul>
+  <% @answers.each do |answer| %>
+    <li><%= answer.description %></li>
+  <% end %>
+</ul>

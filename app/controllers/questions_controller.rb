@@ -2,13 +2,14 @@ class QuestionsController < ApplicationController
 
   # GET /questions
   def index
-    @questions = Question.order(created_at: :asc)
-
+    @questions = Question.order(created_at: :desc)
   end
 
   # GET /questions/1
   def show
     @question = Question.find(params[:id])
+    @answers = @question.answers.order(created_at: :asc)
+    @answer = Answer.new
   end
 
   # GET /questions/new
@@ -22,14 +23,39 @@ class QuestionsController < ApplicationController
     @question = Question.new(question_params)
 
     if @question.save
-      flash[:notice] = "Question was successfully created."
+      flash[:notice] = ["Question was successfully created."]
       redirect_to @question
     else
-      flash[:notice] = "Invalid question."
+        flash.now[:notice] = @question.errors.full_messages
       # redirect_to new_question_path
       render :new
     end
   end
+
+  def edit
+    @question = Question.find(params[:id])
+  end
+
+  def update
+    @question = Question.find(params[:id])
+    if @question.update(question_params)
+      redirect_to @question
+    else
+      flash.now[:notice] = @question.errors.full_messages
+      render :edit
+    end
+  end
+
+  def destroy
+    @question = Question.find(params[:id])
+    @question.answers.each do |answer|
+      answer.destroy
+    end
+    @question.destroy
+    redirect_to questions_path
+  end
+
+  private
 
   def question_params
     params.require(:question).permit(:title, :description)

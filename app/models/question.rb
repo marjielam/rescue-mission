@@ -1,8 +1,8 @@
 class Question < ApplicationRecord
-  # has_many :answers
+  has_many :answers
 
-  validates :title, presence: {message: " -- no title found."}
+  validates :title, presence: true
+  validates :title, length: { minimum: 40 }
   validates :description, presence: true
-  validates :title, length: { minumum: 40, maximum: 255 }
-  validates :description, length: { minimum: 150, maximum: 1000 }
+  validates :description, length: { minimum: 150 }
 end
