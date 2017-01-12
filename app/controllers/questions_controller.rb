@@ -21,7 +21,7 @@ class QuestionsController < ApplicationController
   # POST /questions
   def create
     @question = Question.new(question_params)
-
+    @question.user = current_user
     if @question.save
       flash[:notice] = ["Question was successfully created."]
       redirect_to @question
@@ -39,6 +39,7 @@ class QuestionsController < ApplicationController
   def update
     @question = Question.find(params[:id])
     if @question.update(question_params)
+      flash[:notice] = ["Question updated successfully."]
       redirect_to @question
     else
       flash.now[:notice] = @question.errors.full_messages
@@ -52,6 +53,7 @@ class QuestionsController < ApplicationController
       answer.destroy
     end
     @question.destroy
+    flash[:notice] = ["Question was successfully deleted."]
     redirect_to questions_path
   end
 

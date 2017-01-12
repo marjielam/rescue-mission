@@ -1,18 +1,11 @@
 class AnswersController < ApplicationController
-  # def index
-  #   @question = Question.find(params[:question_id])
-  #   @answers = @question.answers
-  # end
-  #
-  # def new
-  #   @question = Question.find(params[:question_id])
-  #   @answer = Answer.new
-  # end
 
   def create
     @question = Question.find(params[:question_id])
     @answer = Answer.new(answer_params)
     @answer.question = @question
+    @answer.user = current_user
+
     @answers = @question.answers
 
     if @answer.save
@@ -24,7 +17,7 @@ class AnswersController < ApplicationController
     end
   end
 
-  def delete
+  def update
   end
 
   private
