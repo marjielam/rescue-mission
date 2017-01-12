@@ -20,6 +20,17 @@
 <h2>Previous Answers</h2>
 <ul>
   <% @answers.each do |answer| %>
-    <li><%= markdown(answer.description) %></li>
+    <% if @question.favorite_id == answer.id %>
+      <li class="current-favorite">
+        <%= markdown(answer.description) %>
+        <p> Current favorite </p>
+      </li>
+    <% else %>
+      <li>
+        <%= markdown(answer.description) %>
+        <%= button_to 'Select favorite', @question, method: :patch,
+          params: { question: { favorite: answer } } %>
+      </li>
+    <% end %>
   <% end %>
 </ul>

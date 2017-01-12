@@ -38,6 +38,11 @@ class QuestionsController < ApplicationController
 
   def update
     @question = Question.find(params[:id])
+    if params[:question][:favorite]
+      @answer = Answer.find(params[:question][:favorite])
+      @question.favorite_id = @answer.id
+    end
+
     if @question.update(question_params)
       flash[:notice] = ["Question updated successfully."]
       redirect_to @question
