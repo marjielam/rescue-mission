@@ -54,12 +54,17 @@ class QuestionsController < ApplicationController
 
   def destroy
     @question = Question.find(params[:id])
-    @question.answers.each do |answer|
-      answer.destroy
+    if @question.user == current_user
+      @question.answers.each do |answer|
+        answer.destroy
+      end
+      @question.destroy
+      flash[:notice] = ["Question was successfully deleted."]
+      redirect_to questions_path
+    else
+      flash[:notice] = ["You can only delete your own questions"]
+      redirect_to @question
     end
-    @question.destroy
-    flash[:notice] = ["Question was successfully deleted."]
-    redirect_to questions_path
   end
 
   private

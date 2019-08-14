@@ -32,12 +32,12 @@
       <p class="notice"><%= notice %></p>
     <% end %>
 
-    <% if alert %>
+    <% if alert.is_a?(Array) %>
       <% alert.each do |this_alert| %>
           <p class="alert"><%= this_alert %></p>
       <% end %>
     <% end %>
-    
+
     <%= yield %>
   </body>
 </html>
